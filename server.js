@@ -12,11 +12,22 @@ mongo.connect('mongodb://127.0.0.1/chat', function(err, db){
 
   io.on('connection', function(socket){
     console.log('Someone connected!');
-
+    var collection = db.collection('messages');
     //Wait for input from frontend
-    socket.on('chat message', function(msg){
-      console.log(msg);
-      io.emit('chat message', msg);
+    socket.on('userinput', function(data){
+
+      console.log(data);
+      var name = data.name,
+          message = data.message,
+          whitespacePattern = /^\s*$/;
+      if(whitespacePattern.test(name) || whitespacePattern.test(message)){
+        console.log('Invalid! Cannot insert empty string.');
+      } else {
+        collection.insert({name: name, message: message}, function(){
+          console.log('data inserted into db.');
+        });
+      }
+
     });
   });
 });
