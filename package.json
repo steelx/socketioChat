@@ -1,0 +1,14 @@
+{
+  "name": "nodeChat",
+  "version": "1.0.0",
+  "description": "MEANstack Real time chat",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "Ajinkya Borade",
+  "license": "ISC"
+}
