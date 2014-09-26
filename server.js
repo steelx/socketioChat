@@ -41,7 +41,9 @@ mongo.connect('mongodb://127.0.0.1/chat', function(err, db){
           console.log('data inserted into db.');
 
           //Emit latest messages to all Clients
-          
+          socket.broadcast.emit('output', [data]);
+
+          socket.emit('output', [data]);
 
           //Send status to current client
           sendStatus({

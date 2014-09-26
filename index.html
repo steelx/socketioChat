@@ -27,9 +27,18 @@
         border-top: none;
         border-bottom: none;
         padding: 5px;
-        font-size: 13px;
+
         height: 300px;
         overflow: auto;
+      }
+
+      .messages p {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .messages p span {
+        margin-left: 10px;
+        font-weight: 100;
       }
 
       .chat-status {
@@ -50,7 +59,7 @@
           <input type="text" name="name" placeholder="Type your Name">
         </label>
         <div class="messages">
-          messages..
+
         </div>
         <label>
           <textarea name="message" placeholder="Type your message here.." cols="30" rows="2"></textarea>
@@ -66,7 +75,8 @@
       $(function(){
         var name = $('.chat input[name="name"]'),
             textarea = $('.chat textarea'),
-            status = $('.chat-status span'), statusOld = status.text();
+            status = $('.chat-status span'), statusOld = status.text(),
+            messagesDiv = $('.messages');
         var setStatus = function(s){
           status.text(s);
 
@@ -80,7 +90,7 @@
 
 
         try {
-          var socket = io.connect('http://localhost:3000');
+          var socket = io.connect('http://10.209.60.71:3000');
         } catch(e){
           console.log('Could not connect to socket.');
         }
@@ -90,8 +100,12 @@
 
           //Listen for output
           socket.on('output', function(data){
-
-            console.log(data);
+            if(data.length){
+              //Loop thru result and append to messages div
+              $.each(data, function(index, val){
+                messagesDiv.prepend("<p>" + val.name + "<span>" + val.message + "</span></p>");
+              });
+            }
           });
 
           //Listen for status
