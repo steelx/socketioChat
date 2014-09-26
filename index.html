@@ -2,16 +2,58 @@
 <html>
   <head>
     <title>NodeJs Real time chat</title>
+
+    <link rel="stylesheet" href="//cdn.foundation5.zurb.com/foundation.css">
+
+    <style>
+      body,html {
+        font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+      }
+
+      .chat-status {
+        color: #c0c0c0;
+        font-size: 12px;
+      }
+    </style>
+
   </head>
   <body>
-    <div class="wrapper">
-      <input type="text" name="name" placeholder="Type your name">
-      <div class="messages">
-        messages..
+    <div class="chat row">
+      <div class="large-5 columns">
+        <label>
+          <input type="text" name="name" placeholder="Type your Name">
+        </label>
+        <div class="messages">
+          messages..
+        </div>
+        <label>
+          <textarea name="message" placeholder="Type your message here.." cols="30" rows="5"></textarea>
+        </label>
+        <div class="chat-status">Status: <span>Idle</span></div>
       </div>
-      <textarea name="message" id="message" cols="30" rows="5"></textarea>
     </div>
 
     <script src="socket.io/socket.io.js"></script><!-- connect to local NodeJs server for socket.io -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script>
+      $(function(){
+        var name = $('.chat input[name="name"]'),
+            textarea = $('.chat textarea');
+
+        try {
+          var socket = io.connect('http://localhost:3000');
+        } catch(e){
+          console.log('Could not connect to socket.');
+        }
+
+        if(socket !== undefined){
+          console.log('Ok!');
+        }
+
+      });//document ready end
+
+    </script>
+
   </body>
 </html>
