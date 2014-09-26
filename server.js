@@ -17,6 +17,16 @@ mongo.connect('mongodb://127.0.0.1/chat', function(err, db){
     var sendStatus = function(s){
       socket.emit('status', s);
     };
+
+    //Emit all messages
+    collection.find().limit(50).sort({_id: 1}).toArray(function(err, res){
+      if(err) {sendStatus('Error fetching messages.');}
+
+      socket.emit('output', res);
+
+    });
+
+
     //Wait for input from frontend
     socket.on('userinput', function(data){
       var name = data.name,
@@ -30,6 +40,10 @@ mongo.connect('mongodb://127.0.0.1/chat', function(err, db){
         collection.insert({name: name, message: message}, function(){
           console.log('data inserted into db.');
 
+          //Emit latest messages to all Clients
+          
+
+          //Send status to current client
           sendStatus({
             message : 'Message sent!',
             clear : true

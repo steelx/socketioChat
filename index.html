@@ -9,12 +9,21 @@
       body,html {
         font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
       }
+
+      .chat h1 {
+        color: #5DBB6D;
+      }
       .chat input {
         margin: 0;
       }
 
+      .chat input,
+      .chat textarea {
+        border-color: #3A3435;
+      }
+
       .messages {
-        border: 1px solid #ccc;
+        border: 1px solid #3A3435;
         border-top: none;
         border-bottom: none;
         padding: 5px;
@@ -24,7 +33,7 @@
       }
 
       .chat-status {
-        color: #333;
+        color: #DD4730;
         font-size: 12px;
       }
       .chat textarea {
@@ -36,7 +45,7 @@
   <body>
     <div class="chat row">
       <div class="large-5 columns">
-        <h1>NodeJs Socket.io Realtime Chat app</h1>
+        <h1>NodeJs Socket Realtime Chat App</h1>
         <label>
           <input type="text" name="name" placeholder="Type your Name">
         </label>
@@ -78,6 +87,12 @@
 
         if(socket !== undefined){
           console.log('Ok!');
+
+          //Listen for output
+          socket.on('output', function(data){
+
+            console.log(data);
+          });
 
           //Listen for status
           socket.on('status', function(data){
