@@ -2,17 +2,33 @@
 <html>
   <head>
     <title>NodeJs Real time chat</title>
-
+    <link rel="shortcut icon" href="./favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="//cdn.foundation5.zurb.com/foundation.css">
 
     <style>
       body,html {
         font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
       }
+      .chat input {
+        margin: 0;
+      }
+
+      .messages {
+        border: 1px solid #ccc;
+        border-top: none;
+        border-bottom: none;
+        padding: 5px;
+        font-size: 13px;
+        height: 300px;
+        overflow: auto;
+      }
 
       .chat-status {
         color: #333;
         font-size: 12px;
+      }
+      .chat textarea {
+        resize: none;
       }
     </style>
 
@@ -20,6 +36,7 @@
   <body>
     <div class="chat row">
       <div class="large-5 columns">
+        <h1>NodeJs Socket.io Realtime Chat app</h1>
         <label>
           <input type="text" name="name" placeholder="Type your Name">
         </label>
@@ -27,7 +44,7 @@
           messages..
         </div>
         <label>
-          <textarea name="message" placeholder="Type your message here.." cols="30" rows="5"></textarea>
+          <textarea name="message" placeholder="Type your message here.." cols="30" rows="2"></textarea>
         </label>
         <div class="chat-status">Status: <span>Idle</span></div>
       </div>
@@ -52,7 +69,6 @@
           }
         };
 
-        setStatus('Testing..');
 
         try {
           var socket = io.connect('http://localhost:3000');
@@ -64,6 +80,19 @@
           console.log('Ok!');
 
           //Listen for status
+          socket.on('status', function(data){
+            if(typeof data === 'object'){
+              setStatus(data.message);
+            } else {
+              //data will be a string incase of error status
+              setStatus(data);
+            }
+
+            if(data.clear === true){
+              textarea.val('');//clear textarea
+            }
+
+          });
 
           //Listen for keydown
           textarea.on('keydown', function(event){
