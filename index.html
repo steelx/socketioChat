@@ -49,6 +49,20 @@
 
         if(socket !== undefined){
           console.log('Ok!');
+
+          //Listen for keydown
+          textarea.on('keydown', function(event){
+            var self = $(this),
+                username = name.val();
+
+            if(event.which === 13 && event.shiftKey === false){
+              //Send data
+              socket.emit('userinput', {
+                name : username,
+                message : self.val()
+              });
+            }
+          });
         }
 
       });//document ready end
